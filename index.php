@@ -32,12 +32,36 @@ include 'database.php';
 <body>
     <nav id="navbar">
         <div id="logo">
-            <img src="logo.png" alt="trainreservation.ml" id="logoimg">
+            <img src="logo.png" alt="www.trainreservation.ml" id="logoimg">
         </div>
         <div id="headers">
-            <button class="help"><span class="iconify" data-icon="bx:help-circle" style="color: blue;" data-width="25"
-                    data-height="25"></span>
+            <button class="help tooltip" id="help_b"><span class="iconify" data-icon="bx:help-circle"
+                    style="color: blue;" data-width="25" data-height="25"></span>
                 <p>Help</p>
+                <div class="tooltiptext" id="tooltiptext1" style="display: none;">
+
+                    <p style="color:white; margin:0px;padding: 6px 20px;border: 2px solid #3a3a3a;background-color: #141938;border-radius: 10px;width: 100px;">
+                        Mode 1:
+                    </p>
+
+                    <p style="margin: 4px 0px;">
+                        Book Seats by entering the number of seats to be booked.</p>
+                    <br><br>
+                    <p style="color:white; margin:0px;padding: 6px 20px;border: 2px solid #3a3a3a;background-color: #141938;border-radius: 10px;width: 100px;">
+                        Mode 2:
+                    </p>
+                    <p style="margin: 4px 0px;">
+                    Book Seats by manually selecting the seats to be booked. Just select the seats and
+                    then click on 'Book' button to book them.
+                    </p>
+                    <br>
+                    <p id="tooltip_reset"><span class="iconify" data-icon="bx:reset" style="color: red;" data-width="25" data-height="25">
+                    </span>
+                    <span> Reset</span>
+                    </p> 
+                    It will reset all of the 80 seats as available, i.e. all seats be unbooked.<br><br>
+
+                </div>
             </button>
             <button class="reset"><span class="iconify" data-icon="bx:reset" style="color: red;" data-width="25"
                     data-height="25"></span>
@@ -52,6 +76,7 @@ include 'database.php';
             <li class="item"><a href="#contact">Contact Us</a></li>
         </ul> -->
     </nav>
+
     <h1 class="h-primary">Train Reservation System</h1>
     <div class="modes">
         <button class="btn" id="mode1">Mode 1</button>
@@ -183,6 +208,14 @@ include 'database.php';
         </div>
 
     </div>
+
+
+    <footer>
+        <div class="center">
+            <!-- Copyright &copy; www.trainreservation.ml All Rights Reserved;-->
+            Made with &#10084;&#65039; by Bharat Singh Rajpurohit
+        </div>
+    </footer>
 
     <script src="script.js"></script>
 </body>
