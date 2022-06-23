@@ -78,9 +78,15 @@ include 'database.php';
     </nav>
 
     <h1 class="h-primary">Train Reservation System</h1>
-    <div class="modes">
-        <button class="btn" id="mode1">Mode 1</button>
-        <button class="btn" id="mode2">Mode 2</button>
+    <div class="modes_switch">
+        <div class="modes">
+            <button class="btn btn_active" id="mode1">Mode 1</button>
+            <button class="btn" id="mode2">Mode 2</button>
+        </div>
+
+        <div class="desc_mode" id="desc1"><h3>(<b>Mode 1:</b> Book Seats by entering the number of seats to be booked)</h3></div>
+        <div class="desc_mode" id="desc2" style="display:none;"><h3>(<b>Mode 2:</b> Book Seats by manually selecting the seats to be booked)</h3></div>
+        
     </div>
     <div class="container">
         <div class="coach">
