@@ -6,9 +6,13 @@ $('#mode1').on('click', function () {
     $("#desc1").show();
     $("#desc2").hide();
     $("#mode2_lower_div").hide();
+    $("#mode1_lower_div").show();
+    $("#success_text_book").hide();
+    $("#failure_text_book").hide();
 
     $("#mode1").addClass("btn_active");
     $("#mode2").removeClass("btn_active");
+    cleanselection();
 
 
 });
@@ -16,12 +20,16 @@ $('#mode2').on('click', function () {
     $("#desc1").hide();
     $("#desc2").show();
     $("#mode2_lower_div").show();
+    $("#mode1_lower_div").hide();
+    $("#success_text_book").hide();
+    $("#failure_text_book").hide();
 
     $("#mode1").removeClass("btn_active");
     $("#mode2").addClass("btn_active");
 
 
 });
+
 
 $('#help_b').on('click', function () {
     // $("#tooltiptext1").toggle();
@@ -43,7 +51,6 @@ $('#reset_b').on('click', function () {
     $("#reset_yes").prop("disabled", false);
 });
 
-// btn.onclick = function() {}
 
 
 //Closes reset modal upon clicking span element(x)
@@ -51,6 +58,9 @@ $('#close1').on('click', function () {
     modal.style.display = "none";
     $("#success_text_reset").hide();
     $("#reset_yes").prop("disabled", false);
+
+    $("#success_text_book").hide();
+    $("#failure_text_book").hide();
     // $("#success_text_reset").hide();
 });
 
@@ -73,51 +83,13 @@ $('#reset_no').on('click', function () {
 $(window).click(function (event) {
     if (event.target == modal) {
         modal.style.display = "none";
+        $("#success_text_book").hide();
+        $("#failure_text_book").hide();
     }
     // $("#success_text_reset").hide();
 });
 
-$('#reset_yes').on('click', function () {
-    // modal.style.display = "none";
-    // $("#success_text_reset").css("visibility", "visible");
-    // $("#reset_yes").prop("readonly", true);
 
-    var type = "reset_seats";
-
-    // Ajax query to reset the seats
-    $.ajax({
-        url: "updateseats.php",
-        type: "POST",
-        data: {
-            type: type
-
-        },
-        cache: false,
-        success: function (dataResult) {
-            // console.log(dataResult);
-            var dataResult = JSON.parse(dataResult);
-            // console.log(dataResult);
-            if (dataResult.statuscode == "s") {
-
-
-                $("#success_text_reset").show();
-                $('#success_text_reset').html(dataResult.description);
-                $("#reset_yes").prop("disabled", true);
-
-            } else {
-                $("#success_text_reset").show();
-                $('#success_text_reset').html(dataResult.description);
-            }
-
-        }
-
-
-    });
-
-
-
-    // console.log("hello_resetyes");
-});
 
 
 // $("#tid3").prop("readonly", true);
@@ -226,8 +198,7 @@ container.addEventListener("click", (e) => {
     }
 });
 
-
-$('#book_cancel_2').on('click', function () {
+function cleanselection() {
     var seatsindex = new Array();
     const count = document.getElementById("count");
     var selected_seats = JSON.parse(localStorage.getItem("selected_seats"));
@@ -248,8 +219,220 @@ $('#book_cancel_2').on('click', function () {
     // console.log(selected_seats);
     const selectedSeatsCount = 0;
     count.innerText = selectedSeatsCount;
+}
+
+$('#book_cancel_2').on('click', function () {
+    cleanselection();
+
+});
+
+$('#reset_yes').on('click', function () {
+    // modal.style.display = "none";
+    // $("#success_text_reset").css("visibility", "visible");
+    // $("#reset_yes").prop("readonly", true);
+
+    var type = "reset_seats";
+
+    // Ajax query to reset the seats
+    $.ajax({
+        url: "updateseats.php",
+        type: "POST",
+        data: {
+            type: type
+
+        },
+        cache: false,
+        success: function (dataResult) {
+            // console.log(dataResult);
+            var dataResult = JSON.parse(dataResult);
+            // console.log(dataResult);
+            if (dataResult.statuscode == "s") {
 
 
+                $("#success_text_reset").show();
+                $("#failure_text_reset").hide();
+
+                $('#success_text_reset').html(dataResult.description);
+                $("#reset_yes").prop("disabled", true);
+
+            } else {
+                $("#success_text_reset").hide();
+                $("#failure_text_reset").show();
+                $('#failure_text_reset').html(dataResult.description);
+            }
+
+            cleanselection();
+            fetchseats();
+
+        }
+
+
+    });
+
+
+
+    // console.log("hello_resetyes");
+});
+
+
+//Book the selected seats
+$('#book_yes_2').on('click', function () {
+
+
+    var type = "book_selected_seats";
+    var selected_seats = JSON.parse(localStorage.getItem("selected_seats"));
+    // console.log(selected_seats);
+    // Ajax query to reset the seats
+
+    if (selected_seats.length > 0) {
+        $.ajax({
+            url: "updateseats.php",
+            type: "POST",
+            data: {
+                type: type,
+                selected_seats: selected_seats
+
+            },
+            cache: false,
+            success: function (dataResult) {
+                // console.log(dataResult);
+                var dataResult = JSON.parse(dataResult);
+                // console.log(dataResult);
+                if (dataResult.statuscode == "s") {
+
+
+                    $("#success_text_book").show();
+                    $("#failure_text_book").hide();
+                    var bookedseats = dataResult.seats_info;
+                    $("#success_text_book").html(bookedseats.length);
+
+                    if (bookedseats.length == 1) {
+                        $("#success_text_book").append(` seat booked successfully. Booked Seat is`);
+                    }
+                    else {
+                        $("#success_text_book").append(` seats booked successfully. Booked Seats are`);
+                    }
+
+                    bookedseats.forEach((element, index) => {
+
+
+
+                        if (index == bookedseats.length - 1) {
+                            $("#success_text_book").append(` ${element.seat_id}.`);
+                        }
+                        else {
+                            $("#success_text_book").append(` ${element.seat_id},`);
+                        }
+
+
+                    });
+
+                } else {
+                    $("#success_text_book").hide();
+                    $("#failure_text_book").show();
+                    $('#failure_text_book').html(dataResult.description);
+                }
+
+                cleanselection();
+                fetchseats();
+
+            }
+
+
+        });
+
+    }
+    else {
+        $("#success_text_book").hide();
+        $("#failure_text_book").show();
+        $('#failure_text_book').html("You need to select at least one seat to book it");
+    }
+
+
+
+
+    // console.log("hello_bookselected");
+});
+
+// $("#task_form")[0].reset();
+
+$('#book_mode1').on('click', function () {
+
+    var num_seats = $('#num_seats').val();
+    var type = "book_num_seats"
+    if (num_seats == 0 || num_seats == "") {
+        $("#success_text_book").hide();
+        $("#failure_text_book").show();
+        $('#failure_text_book').html("You need to enter at least one seat to book it");
+    }
+    else if (num_seats > 7) {
+        $("#success_text_book").hide();
+        $("#failure_text_book").show();
+        $('#failure_text_book').html("Can not book more than 7 seats at once");
+    }
+    else {
+        $.ajax({
+            url: "updateseats.php",
+            type: "POST",
+            data: {
+                type: type,
+                num_seats: num_seats
+
+            },
+            cache: false,
+            success: function (dataResult) {
+                console.log(dataResult);
+                var dataResult = JSON.parse(dataResult);
+                console.log(dataResult);
+                if (dataResult.statuscode == "s") {
+
+
+                    $("#success_text_book").show();
+                    $("#failure_text_book").hide();
+                    var bookedseats = dataResult.seat_info;
+                    $("#success_text_book").html(bookedseats.length);
+
+                    if (bookedseats.length == 1) {
+                        $("#success_text_book").append(` seat booked successfully. Booked Seat is`);
+                    }
+                    else {
+                        $("#success_text_book").append(` seats booked successfully. Booked Seats are`);
+                    }
+
+                    bookedseats.forEach((element, index) => {
+
+
+
+                        if (index == bookedseats.length - 1) {
+                            $("#success_text_book").append(` ${element.seat_id}.`);
+                        }
+                        else {
+                            $("#success_text_book").append(` ${element.seat_id},`);
+                        }
+
+
+                    });
+
+
+                } else {
+                    $("#success_text_book").hide();
+                    $("#failure_text_book").show();
+                    $("#failure_text_book").html(dataResult.description);
+                }
+
+                // cleanselection();
+                fetchseats();
+
+            }
+
+
+        });
+    }
 
 
 });
+
+//Prevent form resubmission of refreshing
+if (window.history.replaceState) {
+    window.history.replaceState(null, null, window.location.href);
+}

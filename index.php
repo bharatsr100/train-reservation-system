@@ -65,7 +65,7 @@ include 'database.php';
                     </span>
                     <span> Reset</span>
                     </p> 
-                    It will reset all of the 80 seats as available, i.e. all seats be unbooked.<br><br>
+                    It will reset all of the 80 seats as available, i.e. all seats will be unbooked.<br><br>
 
                 </div>
             </button>
@@ -95,7 +95,8 @@ include 'database.php';
         <p class="modal_head">(All the seats will be unbooked)</p>
     </div>
     <div class="modal-body">
-        <p class="success_text" id="success_text_reset" >Reset Successfull</p>
+        <p class="success_text" id="success_text_reset" style="display: none;">Reset Successfull</p>
+        <p class="failure_text" id="failure_text_reset" style="display: none;">Reset Not Successfull</p>
     </div>
     <div class="modal-footer">
         <!-- <h3>Modal Footer</h3> -->
@@ -137,7 +138,7 @@ include 'database.php';
 
         <li>
         <div class="seat1 sold"></div>
-        <small>Sold</small>
+        <small>Booked</small>
         </li>
     </ul>
     </div>
@@ -273,9 +274,32 @@ include 'database.php';
         </div>
 
     </div>
+    
+    <div id="lower_message">
+        <p class="success_text" id="success_text_book" style="display:none;">Booking Successfull</p>
+        <p class="failure_text" id="failure_text_book" style="display:none;">Booking Failed</p>
+    </div>
 
+    <div id="mode1_lower_div" style="display:block;">
+
+
+        <!-- <p class="text"> You have selected <span id="count">0</span> seats</p> -->
+        <form id="mode1_form" name="mode1_form" method="post" >
+
+        <div  class="form-group">
+            <label  for="num_seats">Enter no of seats to be booked:
+            </label>
+            <input type="number" id="num_seats" min="0" step="1" oninput="validity.valid||(value='');" name="num_seats" class="form-control" placeholder="No of Seats">
+        </div>
+
+            <button type="button" class="confirm" id="book_mode1">Book </button>
+        </form>
+
+
+    </div>
     <div id="mode2_lower_div" style="display:none;">
-        <!-- <h3>Modal Footer</h3> -->
+
+
         <p class="text"> You have selected <span id="count">0</span> seats</p>
         <div id="mode2_lower_btn">
             <button class="confirm" id="book_yes_2">Book </button>

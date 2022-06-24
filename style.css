@@ -206,7 +206,7 @@ p {
 
 .btn_active {
     background-color: #141938;
-    /* border: 2px solid #ffffff; */
+    border: 2px solid #e1e2f2;
     box-shadow: 0px 3px 2px 0px #0e1921;
     transform: translateY(2px);
 }
@@ -393,9 +393,22 @@ footer {
 
 .success_text {
     /* visibility: hidden; */
-    display: none;
+
     color: green;
     background-color: lightgreen;
+    border-radius: 4px;
+    height: 35px;
+    font-size: 1rem;
+    padding: 5px 10px;
+}
+
+#success_text_book {
+    height: auto;
+}
+
+.failure_text {
+    color: #a50505;
+    background-color: rgb(209, 119, 119);
     border-radius: 4px;
     height: 35px;
     font-size: 1rem;
@@ -498,6 +511,12 @@ footer {
     justify-content: center; */
 }
 
+#lower_message p {
+    width: 24%;
+    margin: 20px auto;
+    text-align: center;
+}
+
 #mode2_lower_btn {
 
     margin: 20px auto;
@@ -513,4 +532,39 @@ p.text {
 
 p.text span {
     color: rgb(158, 248, 158);
+}
+
+#mode1_lower_div {
+    width: 50%;
+    margin: 20px auto;
+
+}
+
+#mode1_form {
+    margin: 5px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+input[type=number],
+select {
+    width: 125px;
+    padding: 5px 6px;
+    margin: 8px 20px;
+    /* display: inline-block; */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+input:focus {
+    outline: none;
+}
+
+.form-group {
+    font-size: 1.3rem;
 }
