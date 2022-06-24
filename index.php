@@ -21,12 +21,18 @@ include 'database.php';
         rel="stylesheet">
     <title>Train Reservation</title>
     <link rel="icon" type="image/png" href="logo.png" />
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.js"></script>
     <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
         integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="style.css">
+
+
+    <!-- Bootstrap Libraries -->
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
 </head>
 
 <body>
@@ -38,7 +44,7 @@ include 'database.php';
             <button class="help tooltip" id="help_b"><span class="iconify" data-icon="bx:help-circle"
                     style="color: blue;" data-width="25" data-height="25"></span>
                 <p>Help</p>
-                <div class="tooltiptext" id="tooltiptext1" style="display: none;">
+                <div class="tooltiptext" id="tooltiptext1" >
 
                     <p style="color:white; margin:0px;padding: 6px 20px;border: 2px solid #3a3a3a;background-color: #141938;border-radius: 10px;width: 100px;">
                         Mode 1:
@@ -63,7 +69,7 @@ include 'database.php';
 
                 </div>
             </button>
-            <button class="reset"><span class="iconify" data-icon="bx:reset" style="color: red;" data-width="25"
+            <button class="reset" id="reset_b"><span class="iconify" data-icon="bx:reset" style="color: red;" data-width="25"
                     data-height="25"></span>
                 <p>Reset</p>
             </button>
@@ -77,6 +83,30 @@ include 'database.php';
         </ul> -->
     </nav>
 
+
+    <!-- The Modal Form for Reset Functionality -->
+    <div id="myModal" class="modal">
+
+    <!-- Reset Modal content -->
+    <div class="modal-content">
+    <div class="modal-header">
+        <span class="close" id="close1">&times;</span>
+        <h3>Do you want to Reset all the 80 Seats ?</h3>
+        <p class="modal_head">(All the seats will be unbooked)</p>
+    </div>
+    <div class="modal-body">
+        <p class="success_text" id="success_text_reset" >Reset Successfull</p>
+    </div>
+    <div class="modal-footer">
+        <!-- <h3>Modal Footer</h3> -->
+        <button class="confirm" id="reset_yes">Yes</button>
+        <button class="reject" id="reset_no">Close</button>
+    </div>
+    </div>
+
+    </div>
+
+
     <h1 class="h-primary">Train Reservation System</h1>
     <div class="modes_switch">
         <div class="modes">
@@ -88,6 +118,35 @@ include 'database.php';
         <div class="desc_mode" id="desc2" style="display:none;"><h3>(<b>Mode 2:</b> Book Seats by manually selecting the seats to be booked)</h3></div>
         
     </div>
+
+    <div class="index">
+
+    <h3 class="center" style="margin:20px 5px;">Types of seats:</h3>
+
+    <div class="seatmap">
+    <ul class="showcase">
+        <li>
+        <div class="seat1"></div>
+        <small>Available</small>
+        </li>
+
+        <li>
+        <div class="seat1 selected"></div>
+        <small>Selected</small>
+        </li>
+
+        <li>
+        <div class="seat1 sold"></div>
+        <small>Sold</small>
+        </li>
+    </ul>
+    </div>
+
+    </div>
+
+
+
+
     <div class="container">
         <div class="coach">
             <div class="row" id="row1">
@@ -224,6 +283,7 @@ include 'database.php';
     </footer>
 
     <script src="script.js"></script>
+
 </body>
 
 </html>
