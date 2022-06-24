@@ -147,7 +147,7 @@ include 'database.php';
 
 
 
-    <div class="container">
+    <div class="container" id="container">
         <div class="coach">
             <div class="row" id="row1">
                 <div class="seat" id="1">1</div>
@@ -270,6 +270,16 @@ include 'database.php';
 
             </div>
 
+        </div>
+
+    </div>
+
+    <div id="mode2_lower_div" style="display:none;">
+        <!-- <h3>Modal Footer</h3> -->
+        <p class="text"> You have selected <span id="count">0</span> seats</p>
+        <div id="mode2_lower_btn">
+            <button class="confirm" id="book_yes_2">Book </button>
+            <button class="reject" id="book_cancel_2">Cancel</button>
         </div>
 
     </div>

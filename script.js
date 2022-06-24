@@ -5,16 +5,22 @@ $('#logoimg').on('click', function () {
 $('#mode1').on('click', function () {
     $("#desc1").show();
     $("#desc2").hide();
+    $("#mode2_lower_div").hide();
 
     $("#mode1").addClass("btn_active");
     $("#mode2").removeClass("btn_active");
+
+
 });
 $('#mode2').on('click', function () {
     $("#desc1").hide();
     $("#desc2").show();
+    $("#mode2_lower_div").show();
 
     $("#mode1").removeClass("btn_active");
     $("#mode2").addClass("btn_active");
+
+
 });
 
 $('#help_b').on('click', function () {
@@ -170,4 +176,80 @@ function fetchseats() {
 
 }
 
+function updateSelectedCount() {
+    const count = document.getElementById("count");
+    const selectedSeats = document.querySelectorAll(".seat.selected");
+    var seatsindex = new Array();
+
+    // var seat_array = [...selectedSeats];
+
+    // console.log(selectedSeats);
+    // console.log(seat_array);
+    // console.log(selectedSeats.length);
+
+    selectedSeats.forEach((element, index) => {
+
+        // console.log(element.id);
+        seatsindex[index] = element.id;
+
+    });
+    // console.log(seatsindex);
+
+    localStorage.setItem("selected_seats", JSON.stringify(seatsindex));
+    const selected_seats = JSON.parse(localStorage.getItem("selected_seats"));
+    const selectedSeatsCount = selectedSeats.length;
+
+    // console.log(selectedSeatsCount);
+    // console.log(selected_seats);
+
+    // selected_seats.forEach((element, index) => {
+
+    // var el = document.getElementById(element);
+    // console.log(el);
+    // });
+
+    count.innerText = selectedSeatsCount;
+
+}
+
+
 fetchseats();
+
+const container = document.querySelector(".container");
+container.addEventListener("click", (e) => {
+    if (
+        e.target.classList.contains("seat") && !e.target.classList.contains("sold") && $("#mode2").hasClass("btn_active")
+    ) {
+        e.target.classList.toggle("selected");
+
+        updateSelectedCount();
+    }
+});
+
+
+$('#book_cancel_2').on('click', function () {
+    var seatsindex = new Array();
+    const count = document.getElementById("count");
+    var selected_seats = JSON.parse(localStorage.getItem("selected_seats"));
+
+    // console.log("before:");
+    // console.log(selected_seats);
+    selected_seats.forEach((element, index) => {
+
+        var el = document.getElementById(element);
+        // console.log(el);
+        $(el).removeClass("selected");
+    });
+
+    localStorage.setItem("selected_seats", JSON.stringify(seatsindex));
+    // var selected_seats = JSON.parse(localStorage.getItem("selected_seats"));
+
+    // console.log("after:");
+    // console.log(selected_seats);
+    const selectedSeatsCount = 0;
+    count.innerText = selectedSeatsCount;
+
+
+
+
+});
