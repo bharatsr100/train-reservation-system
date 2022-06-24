@@ -381,9 +381,9 @@ $('#book_mode1').on('click', function () {
             },
             cache: false,
             success: function (dataResult) {
-                console.log(dataResult);
+                // console.log(dataResult);
                 var dataResult = JSON.parse(dataResult);
-                console.log(dataResult);
+                // console.log(dataResult);
                 if (dataResult.statuscode == "s") {
 
 

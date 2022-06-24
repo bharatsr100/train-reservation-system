@@ -269,83 +269,65 @@ if($_POST['type']=="reset_seats" ){
     }
     else{
 
-        //Starting of sliding window
-        $st= -1;
-        // Ending of sliding window
-        $en= -1;
-        //Length of Minimum slot found
-        $min_slot=100;
-        //Starting index of minimum slot
-        $min_slot_i=0;
-        //Count of empty seats starting from min_slot_i
-        $count=0;
 
         $seats_status = array();
         $i=0;
-        
-        $r2= mysqli_query($conn,"select * from seats order by seat_no");
-        $n2= mysqli_num_rows($r1);
-
+        $status =1;
+        $r2= mysqli_query($conn,"select * from seats where seat_status=0 order by seat_no");
+   
         while($row=mysqli_fetch_assoc($r2)){
-            $seats_status[$i]= $row['seat_status'];
+            $seats_status[$i]= $row['seat_id'];
+            // echo "\n inloop i:{$i}  seats_id: {$seats_status[$i]}";
 
             $i++;
         }
+        $size= count($seats_status);
+        $start_i=0;
 
-        for($i=0;$i<80;$i++){
-            $en=$i;
-            if($seats_status[$i]==0){
-                $count++;
-                $slot=$en-$st;
-                if($count==$seats_count){
-                    if($slot<$min_slot){
-                        $min_slot= $slot;
-                        $min_slot_i= $st+1;
-                    }
+        $i=0;
+        $j=0;
+        $k= $num_seats;
 
-                    while($count==$seats_count){
-                        
-                        $st++;
-                        if($seats_status[$st]==0) {
-                            $count--;}
-                        else{
-                            $slot=$en-$st;
-
-                            $min_slot= $slot;
-                            $min_slot_i= $st+1;
-                        }
-                    }
-                }
+        $min_diff= 100;
+        while($j<$size){
+            $diff= $seats_status[$j]-$seats_status[$i]+1;
+            if($j-$i+1< $k){
+                $j++;
             }
-            
-
-        }
-        $temp=$seats_count;
-        while($seats_count>0 && $min_slot_i<80){
-            if($seats_status[$min_slot_i]==0){
-                $seats_count--;
-                $s1= mysqli_query($conn,"UPDATE seats SET seat_status=1 WHERE seat_id= '$min_slot_i'");
-                
-                if($s1){
-                    $seat['seat_id']= $min_slot_i;
-                    $seat['seat_no']= $min_slot_i;
-                    $seat['seat_status']= 1;
-                    $seat['statuscode']= "s";
-                    $seat['description']= "Seat Booked Successfully";
+            else if($j-$i+1==$k){
+                if($min_diff>$diff){
+                    $min_diff=$diff;
+                    $start_i=$i; 
                 }
-                else{
-                    $seat['statuscode']= "e";
-                    $seat['description']= "Error while booking seat";
-                }
-    
-                $allseats[]=$seat;
-                $min_slot_i++;
+                $i++;
+                $j++;
             }
         }
 
+        for($i=0;$i<$k;$i++){
+            $id= $seats_status[$start_i+$i];
+            $s1= mysqli_query($conn,"UPDATE seats SET seat_status=1 WHERE seat_id= '$id'") ;
+
+            if($s1){
+                $seat['seat_id']= $id;
+                $seat['seat_no']= $id;
+                $seat['seat_status']= 1;
+                $seat['statuscode']= "s";
+                $seat['description']= "Seat Booked Successfully";
+            }
+            else{
+                $seat['statuscode']= "e";
+                $seat['description']= "Error while booking seat";
+            }
+
+            $allseats[]=$seat;
+        }
+  
         $b = " seat booked successfully but not in a row";
-        $success_text= $temp.$b;
+        $success_text= $num_seats.$b;
 
+    
+        $result['seat_info']=$allseats;
         $result['statuscode']="s";
         $result['description']= $success_text;
         echo json_encode($result);
