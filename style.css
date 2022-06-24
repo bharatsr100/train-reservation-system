@@ -475,6 +475,11 @@ footer {
     color: black;
 }
 
+.seat:not(.sold):hover {
+    cursor: pointer;
+    transform: scale(1.13);
+}
+
 @media only screen and (min-width:850px) and (max-width: 1310px) {
     .seat1 {
         width: 15px;

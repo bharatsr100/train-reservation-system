@@ -121,24 +121,53 @@ $('#reset_yes').on('click', function () {
 // $("#tid3").attr("disabled", "disabled");
 
 
-// function fetchseats() {
-//     const selectedSeats = JSON.parse(localStorage.getItem("selectedSeats"));
-  
-//     if (selectedSeats !== null && selectedSeats.length > 0) {
-//       seats.forEach((seat, index) => {
-//         if (selectedSeats.indexOf(index) > -1) {
-//           // console.log(seat.classList.add("selected"));
-//           seat.classList.add("selected");
-//         }
-//       });
-//     }
-  
-//     const selectedMovieIndex = localStorage.getItem("selectedMovieIndex");
-  
-//     if (selectedMovieIndex !== null) {
-//       movieSelect.selectedIndex = selectedMovieIndex;
-//       // console.log(selectedMovieIndex)
-//     }
-//   }
-//   // console.log(populateUI())
-//   fetchseats();
+function fetchseats() {
+    var type = "fetch_seats";
+
+    $.ajax({
+        url: "updateseats.php",
+        type: "POST",
+        data: {
+            type: type
+
+        },
+        cache: false,
+        success: function (dataResult) {
+            // console.log(dataResult);
+            var dataResult = JSON.parse(dataResult);
+            // console.log(dataResult);
+            if (dataResult.statuscode == "s") {
+                const seats_info = dataResult.seats_info;
+                // console.log(seats_info);
+
+
+                localStorage.setItem("all_seats_info", JSON.stringify(seats_info));
+
+                // const all_seats_info = JSON.parse(localStorage.getItem("all_seats_info"));
+                // console.log(all_seats_info);
+
+                $(seats_info).each(function (index, item) {
+                    var seat_div = document.getElementById(item.seat_id);
+                    // console.log(seat_div);
+                    if (item.seat_status == 1) {
+                        // console.log("seat booked");
+                        $(seat_div).addClass("sold");
+                    }
+                    else {
+                        // console.log("seat available");
+                        $(seat_div).removeClass("sold");
+                    }
+                });
+
+            }
+
+            // console.log(dataResult.statuscode, dataResult.description)
+
+        }
+
+
+    });
+
+}
+
+fetchseats();
