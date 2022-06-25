@@ -1,7 +1,10 @@
 <?php
 
 include 'database.php';
+// Resets all the seats
 if($_POST['type']=="reset_seats" ){
+
+    // Result array to store the result
     $result = array (
 
             "statuscode"=>"e",
@@ -15,12 +18,15 @@ if($_POST['type']=="reset_seats" ){
             $result['statuscode']="s";
 
         }
-   
+        // convert PHP array or object into JSON format
         echo json_encode($result);
   
   }
+
+//  Fetch status of all seats from database
   else if($_POST['type']=="fetch_seats"){
 
+    // Result array to store all results
     $result = array (
         "seats_info"=>"",
         "statuscode"=>"e",
@@ -28,8 +34,10 @@ if($_POST['type']=="reset_seats" ){
 
     );
 
-    
+    // Array to store data of all seats
     $allseats=array();
+
+    // Array to store data of each seat
     $seat = array (
 
         "seat_id"=>"",
@@ -62,20 +70,26 @@ if($_POST['type']=="reset_seats" ){
     }
     $result['seats_info']=$allseats;
 
+    // Returns result in json format
     echo json_encode($result);
   }
+
+//   Books the selected seats by user in Mode 2
   else if($_POST['type']=="book_selected_seats"){
+    // Array consisted of seat numbers which the user wants to book
     $selected_seats= $_POST['selected_seats'];
     $seats_count= count($selected_seats);
-    $b = " seat booked successfully";
 
-    $success_text= $seats_count.$b;
     $result = array (
         "seats_info"=>"",
         "statuscode"=>"e",
         "description"=>"You need to select at least one seat to book it"
-
+        
     );
+    
+    // Success Text to store in result array if there are no issues
+    $b = " seat booked successfully";
+    $success_text= $seats_count.$b;
 
     $allseats=array();
     $seat = array (
@@ -122,10 +136,11 @@ if($_POST['type']=="reset_seats" ){
 
 
   }
+
+//   Books the number of seats entered by user in Mode 1
   else if($_POST['type']=="book_num_seats"){
       
     $num_seats= $_POST['num_seats'];
-    // echo $num_seats;
     $result = array (
         "seat_info"=>"",
         "statuscode"=>"e",
@@ -146,15 +161,21 @@ if($_POST['type']=="reset_seats" ){
 
     );
 
+    // Will store the number of empty seats empty in each row
     $row_status= array();
+    // variable to track count of empty seats in a row
     $row_avl=0;
-
+    // Will store the indexes of all empty seats
     $seats_status = array();
+    // Will store status of all seats....0 if available and 1 if  booked
     $all_seats_status = array();
+    // Total empty seats
     $total_empty=0;
+    // Variable for index
     $i=0;
     $r2= mysqli_query($conn,"select * from seats order by seat_no");
 
+    // To store status of all seats and id of empty seats
     while($row=mysqli_fetch_assoc($r2)){
         if(!$row['seat_status']){
             $seats_status[]=$row['seat_id'];
@@ -165,6 +186,8 @@ if($_POST['type']=="reset_seats" ){
         
     }
 
+    
+    // To store number of seats empty in each row...This loop could have been merged wih upper loop...but wanted to do it seperately to avoid mess
     $r3= mysqli_query($conn,"select * from seats order by seat_no");
     while($row3=mysqli_fetch_assoc($r3)){
         $total_empty=$total_empty+ !$row3['seat_status'];
@@ -177,7 +200,10 @@ if($_POST['type']=="reset_seats" ){
         }
     }
 
+    // Store number of empty seats in last row
     $row_status[]= $row_avl;
+
+    // To check if there are n (number of seats required by user) empty seats availale in a single row or not
     $flag2=0;
     $row_index=0;
 
@@ -191,14 +217,17 @@ if($_POST['type']=="reset_seats" ){
         }
     }
 
+    // Success text if everything goes right
     $b = " seat booked successfully but not in a row";
     $success_text= $num_seats.$b;
 
+    // In case enough number of seats are not available
     if($num_seats>$total_empty) {
         $result['statuscode']="e";
         $result['description']="Enough number of seats not available";
         echo json_encode($result);
     }
+    // If there are n (number of seats demanded by user) empty seats in a single row
     else if($flag2==1){
         $seats_required= $num_seats;
         $k= ($row_index-1)*7+1;
@@ -232,10 +261,9 @@ if($_POST['type']=="reset_seats" ){
 
     }
 
+    // To book the nearest n seats...as they are not available in a single row
+    // Based on the concept of sliding window
     else{
-
-
-
 
         $size= count($seats_status);
         $start_i=0;
@@ -285,6 +313,8 @@ if($_POST['type']=="reset_seats" ){
         $result['seat_info']=$allseats;
         $result['statuscode']="s";
         $result['description']= $success_text;
+
+        // Returns the result object in json format
         echo json_encode($result);
 
 
@@ -293,9 +323,9 @@ if($_POST['type']=="reset_seats" ){
 
     }
     
-        
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////        
 ///////////////////////////// IGNORE the below code //////////////////////////////////////////////////////////////////////////////////////////
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // //Array index initialization
     // $i=1;
     // //starting of sliding window
