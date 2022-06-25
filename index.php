@@ -6,8 +6,6 @@ include 'database.php';
 //     $r3= mysqli_query($conn, "INSERT INTO seats (seat_id,seat_no,seat_status)VALUES ('$i','$i',0)");
 // }
 
-
-
 ?>
 <html lang="en">
 
@@ -15,6 +13,8 @@ include 'database.php';
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Imported Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&family=Bree+Serif&display=swap"
@@ -22,17 +22,14 @@ include 'database.php';
     <title>Train Reservation</title>
     <link rel="icon" type="image/png" href="logo.png" />
     <link rel="stylesheet" href="style.css">
+    <!-- Imported font-awesome and iconify for icons -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.js"></script>
     <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+    <!-- Imported jquery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
         integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-
-    <!-- Bootstrap Libraries -->
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
 </head>
 
 <body>
@@ -75,12 +72,6 @@ include 'database.php';
             </button>
         </div>
 
-        <!-- <ul>
-            <li class="item"><a href="#home">Home</a></li>
-            <li class="item"><a href="#services-container">Services</a></li>
-            <li class="item"><a href="#client-section">Our Clients</a></li>
-            <li class="item"><a href="#contact">Contact Us</a></li>
-        </ul> -->
     </nav>
 
 
@@ -111,10 +102,12 @@ include 'database.php';
     <h1 class="h-primary">Train Reservation System</h1>
     <div class="modes_switch">
         <div class="modes">
+            <!-- Buttons to toggle between Mode1 and Mode2 -->
             <button class="btn btn_active" id="mode1">Mode 1</button>
             <button class="btn" id="mode2">Mode 2</button>
         </div>
 
+        <!-- Mode1 and Mode2 description -->
         <div class="desc_mode" id="desc1"><h3>(<b>Mode 1:</b> Book Seats by entering the number of seats to be booked)</h3></div>
         <div class="desc_mode" id="desc2" style="display:none;"><h3>(<b>Mode 2:</b> Book Seats by manually selecting the seats to be booked)</h3></div>
         
@@ -125,6 +118,7 @@ include 'database.php';
     <h3 class="center" style="margin:20px 5px;">Types of seats:</h3>
 
     <div class="seatmap">
+        <!-- Disply seat index..to show differnt types of seat status -->
     <ul class="showcase">
         <li>
         <div class="seat1"></div>
@@ -146,8 +140,6 @@ include 'database.php';
     </div>
 
 
-
-
     <div class="container" id="container">
         <div class="coach">
             <div class="row" id="row1">
@@ -167,13 +159,7 @@ include 'database.php';
                 <div class="seat" id="10">10</div>
                 <div class="seat" id="9">9</div>
                 <div class="seat" id="8">8</div>
-                <!-- <div class="seat" id="8"></div>
-                <div class="seat" id="9"></div>
-                <div class="seat" id="10"></div>
-                <div class="seat" id="11"></div>
-                <div class="seat" id="12"></div>
-                <div class="seat" id="13"></div>
-                <div class="seat" id="14"></div> -->
+
             </div>
             <div class="row" id="row3">
                 <div class="seat" id="15">15</div>
@@ -192,13 +178,7 @@ include 'database.php';
                 <div class="seat" id="24">24</div>
                 <div class="seat" id="23">23</div>
                 <div class="seat" id="22">22</div>
-                <!-- <div class="seat" id="22"></div>
-                <div class="seat" id="23"></div>
-                <div class="seat" id="24"></div>
-                <div class="seat" id="25"></div>
-                <div class="seat" id="26"></div>
-                <div class="seat" id="27"></div>
-                <div class="seat" id="28"></div> -->
+>
             </div>
             <div class="row" id="row5">
                 <div class="seat" id="29">29</div>
@@ -282,8 +262,7 @@ include 'database.php';
 
     <div id="mode1_lower_div" style="display:block;">
 
-
-        <!-- <p class="text"> You have selected <span id="count">0</span> seats</p> -->
+        <!-- Form to book seats by entering number of required seats -->
         <form id="mode1_form" name="mode1_form" method="post" >
 
         <div  class="form-group">
