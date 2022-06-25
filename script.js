@@ -31,14 +31,6 @@ $('#mode2').on('click', function () {
 });
 
 
-$('#help_b').on('click', function () {
-    // $("#tooltiptext1").toggle();
-    // visibility: visible;
-    // visibility: hidden;
-    // console.log("Testing Tooltip");
-    // var div = document.getElementById("tooltiptext1");
-    // div.style.display = div.style.display == "none" ? "block" : "none";
-});
 
 // Get the modal
 var modal = document.getElementById("myModal");
@@ -52,7 +44,6 @@ $('#reset_b').on('click', function () {
 });
 
 
-
 //Closes reset modal upon clicking span element(x)
 $('#close1').on('click', function () {
     modal.style.display = "none";
@@ -61,7 +52,6 @@ $('#close1').on('click', function () {
 
     $("#success_text_book").hide();
     $("#failure_text_book").hide();
-    // $("#success_text_reset").hide();
 });
 
 $('#reset_no').on('click', function () {
@@ -69,36 +59,18 @@ $('#reset_no').on('click', function () {
     $("#success_text_reset").hide();
     $("#reset_yes").prop("disabled", false);
 
-    // $("#success_text_reset").hide();
 });
 
 // When the user clicks anywhere outside of the reset modal, close it
-// window.onclick = function (event) {
-//     if (event.target == modal) {
-//         modal.style.display = "none";
-//     }
-// }
-
-
 $(window).click(function (event) {
     if (event.target == modal) {
         modal.style.display = "none";
         $("#success_text_book").hide();
         $("#failure_text_book").hide();
     }
-    // $("#success_text_reset").hide();
 });
 
-
-
-
-// $("#tid3").prop("readonly", true);
-// $("#tid3").prop("disabled", false);
-
-// $("#tid3").attr("readonly", "readonly");
-// $("#tid3").attr("disabled", "disabled");
-
-
+//Function to fetch status of all seats and update the UI
 function fetchseats() {
     var type = "fetch_seats";
 
@@ -118,68 +90,37 @@ function fetchseats() {
                 const seats_info = dataResult.seats_info;
                 // console.log(seats_info);
 
-
                 localStorage.setItem("all_seats_info", JSON.stringify(seats_info));
-
-                // const all_seats_info = JSON.parse(localStorage.getItem("all_seats_info"));
-                // console.log(all_seats_info);
-
                 $(seats_info).each(function (index, item) {
                     var seat_div = document.getElementById(item.seat_id);
-                    // console.log(seat_div);
                     if (item.seat_status == 1) {
-                        // console.log("seat booked");
                         $(seat_div).addClass("sold");
                     }
                     else {
-                        // console.log("seat available");
                         $(seat_div).removeClass("sold");
                     }
                 });
-
             }
-
-            // console.log(dataResult.statuscode, dataResult.description)
-
         }
-
-
     });
 
 }
 
+//Function to update the selected seats by user when Mode 2 is active 
 function updateSelectedCount() {
     const count = document.getElementById("count");
     const selectedSeats = document.querySelectorAll(".seat.selected");
     var seatsindex = new Array();
 
-    // var seat_array = [...selectedSeats];
-
-    // console.log(selectedSeats);
-    // console.log(seat_array);
-    // console.log(selectedSeats.length);
-
     selectedSeats.forEach((element, index) => {
-
-        // console.log(element.id);
         seatsindex[index] = element.id;
 
     });
     // console.log(seatsindex);
 
     localStorage.setItem("selected_seats", JSON.stringify(seatsindex));
-    const selected_seats = JSON.parse(localStorage.getItem("selected_seats"));
+    // const selected_seats = JSON.parse(localStorage.getItem("selected_seats"));
     const selectedSeatsCount = selectedSeats.length;
-
-    // console.log(selectedSeatsCount);
-    // console.log(selected_seats);
-
-    // selected_seats.forEach((element, index) => {
-
-    // var el = document.getElementById(element);
-    // console.log(el);
-    // });
-
     count.innerText = selectedSeatsCount;
 
 }
@@ -188,6 +129,8 @@ function updateSelectedCount() {
 fetchseats();
 
 const container = document.querySelector(".container");
+
+//Adding event listener so that user can manually select and book seats when switched to mode2
 container.addEventListener("click", (e) => {
     if (
         e.target.classList.contains("seat") && !e.target.classList.contains("sold") && $("#mode2").hasClass("btn_active")
@@ -198,13 +141,11 @@ container.addEventListener("click", (e) => {
     }
 });
 
+// Function to clean the selected seats ....i.e. everything will be unselected
 function cleanselection() {
     var seatsindex = new Array();
     const count = document.getElementById("count");
     var selected_seats = JSON.parse(localStorage.getItem("selected_seats"));
-
-    // console.log("before:");
-    // console.log(selected_seats);
     selected_seats.forEach((element, index) => {
 
         var el = document.getElementById(element);
@@ -213,23 +154,18 @@ function cleanselection() {
     });
 
     localStorage.setItem("selected_seats", JSON.stringify(seatsindex));
-    // var selected_seats = JSON.parse(localStorage.getItem("selected_seats"));
-
-    // console.log("after:");
-    // console.log(selected_seats);
     const selectedSeatsCount = 0;
     count.innerText = selectedSeatsCount;
 }
 
+// Function to clean selection whenever user clicks on cancel button in Mode 2
 $('#book_cancel_2').on('click', function () {
     cleanselection();
 
 });
 
+// This function resets all the seats as available i.e. all seats will be unbooked
 $('#reset_yes').on('click', function () {
-    // modal.style.display = "none";
-    // $("#success_text_reset").css("visibility", "visible");
-    // $("#reset_yes").prop("readonly", true);
 
     var type = "reset_seats";
 
@@ -268,14 +204,10 @@ $('#reset_yes').on('click', function () {
 
 
     });
-
-
-
-    // console.log("hello_resetyes");
 });
 
 
-//Book the selected seats
+//Book the selected seats in Mode 2
 $('#book_yes_2').on('click', function () {
 
 
@@ -347,15 +279,9 @@ $('#book_yes_2').on('click', function () {
         $("#failure_text_book").show();
         $('#failure_text_book').html("You need to select at least one seat to book it");
     }
-
-
-
-
-    // console.log("hello_bookselected");
 });
 
-// $("#task_form")[0].reset();
-
+// Function to book the number of seats entered by user in Mode 1
 $('#book_mode1').on('click', function () {
 
     var num_seats = $('#num_seats').val();
@@ -432,7 +358,7 @@ $('#book_mode1').on('click', function () {
 
 });
 
-//Prevent form resubmission of refreshing
+//Prevent form resubmission on refreshing
 if (window.history.replaceState) {
     window.history.replaceState(null, null, window.location.href);
 }

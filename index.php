@@ -178,7 +178,7 @@ include 'database.php';
                 <div class="seat" id="24">24</div>
                 <div class="seat" id="23">23</div>
                 <div class="seat" id="22">22</div>
->
+
             </div>
             <div class="row" id="row5">
                 <div class="seat" id="29">29</div>
